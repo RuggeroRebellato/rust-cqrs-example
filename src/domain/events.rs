@@ -3,6 +3,10 @@
 
     In the cqrs-es framework the domain events are expected to be an enum with payloads similar to the commands, this will give us a single root event for each aggregate.
 
+    Events are always in the past tense, and should be named in a way that makes it clear what happened. The event payloads should contain all of the information needed to rebuild the aggregate state.
+
+    e.g: CustomerDepositedMoney { amount: f64, balance: f64 }
+
     The enum as well as the payloads should derive several traits.
 
     Debug - used for error handling and testing.
@@ -52,7 +56,7 @@ impl DomainEvent for BankAccountEvent {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct BankAccountError(String);
 
 impl Display for BankAccountError {
@@ -65,6 +69,6 @@ impl std::error::Error for BankAccountError {}
 
 impl From<&str> for BankAccountError {
     fn from(message: &str) -> Self {
-        BankAccountError(message.to_string())
+        Self(message.to_string())
     }
 }
