@@ -2,3 +2,4 @@
 #![deny(clippy::all)]
 
 mod domain;
+mod services;
